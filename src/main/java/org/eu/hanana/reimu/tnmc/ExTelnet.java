@@ -34,6 +34,13 @@ public class ExTelnet extends Thread{
     }
     BufferedWriter writer;
     public void send(String s) throws IOException {
+        while (writer==null&&socket.isConnected()) {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         writer.write(s);
         writer.newLine();
         writer.flush();
